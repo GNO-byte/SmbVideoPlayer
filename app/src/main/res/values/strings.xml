@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SmbVideoPlayer</string>
+    <string name="browse_title">Smb video player</string>
+
+    <!-- Sync Preferences -->
+    <string name="setting_url_tittle">Shared directory address</string>
+    <string name="setting_username_title">Username</string>
+    <string name="setting_password_title">Password</string>
+    <string name="my_movies">My movies</string>
+    <string name="Connection">Сonnection</string>
+    <string name="Settings">Settings</string>
+
+</resources>
