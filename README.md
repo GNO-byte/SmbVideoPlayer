@@ -11,7 +11,6 @@ Access windows shares (video) on Android TV with jcifs library (<https://www.jci
 
 ### Technologies  
 leanback  
-Retrofit  
 Coroutines  
 ViewModel  
 LiveData  
