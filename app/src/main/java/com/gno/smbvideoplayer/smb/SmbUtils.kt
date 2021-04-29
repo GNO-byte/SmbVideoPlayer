@@ -25,7 +25,7 @@ object SmbUtils {
                             val uri = parse(
                                 Streamer.URL + fromFile(
                                     File(
-                                        parse(sfile.path).path
+                                        parse(sfile.path).path ?: ""
                                     )
                                 ).encodedPath
                             )
@@ -52,8 +52,8 @@ object SmbUtils {
         }.start()
     }
 
-    fun getSMBListFiles(url: String, username: String, password: String): List<SmbFile>? {
-        return getSMBFile(url, username, password).listFiles()?.toList()
+    fun getSMBListFiles(url: String, username: String, password: String): List<SmbFile> {
+        return getSMBFile(url, username, password).listFiles().toList()
     }
 
     fun getSMBFile(url: String, username: String, password: String): SmbFile {
