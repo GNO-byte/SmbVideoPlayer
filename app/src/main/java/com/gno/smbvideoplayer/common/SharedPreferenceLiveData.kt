@@ -19,7 +19,7 @@ abstract class SharedPreferenceLiveData<T>(
             }
         }
 
-    abstract fun getValueFromPreferences(key: String?, defValue: T): T
+    abstract fun getValueFromPreferences(key: String, defValue: T): T
     override fun onActive() {
         super.onActive()
         value = getValueFromPreferences(key, defValue)
@@ -32,9 +32,9 @@ abstract class SharedPreferenceLiveData<T>(
     }
 
     fun getStringLiveData(
-        key: String?,
-        defaultValue: String?
-    ): SharedPreferenceLiveData<String?> {
+        key: String,
+        defaultValue: String
+    ): SharedPreferenceLiveData<String> {
         return SharedPreferenceStringLiveData(sharedPrefs, key, defaultValue)
     }
 }

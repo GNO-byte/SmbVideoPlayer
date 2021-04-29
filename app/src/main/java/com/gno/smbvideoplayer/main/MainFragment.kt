@@ -9,6 +9,7 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import androidx.leanback.app.BackgroundManager
 import androidx.leanback.app.BrowseSupportFragment
@@ -22,10 +23,10 @@ import jcifs.smb.SmbFile
 class MainFragment : BrowseSupportFragment() {
 
     private lateinit var mainViewModel: MainViewModel
-    private var listSmbFiles: List<SmbFile>? = null
+    private lateinit var listSmbFiles: List<SmbFile>
 
     private lateinit var mBackgroundManager: BackgroundManager
-    private var mDefaultBackground: Drawable? = null
+    private lateinit var mDefaultBackground: Drawable
     private lateinit var mMetrics: DisplayMetrics
 
 
@@ -43,14 +44,13 @@ class MainFragment : BrowseSupportFragment() {
 
     private fun prepareBackgroundManager() {
 
-        mBackgroundManager = BackgroundManager.getInstance(activity)
-        mBackgroundManager.attach(activity?.window)
-        mDefaultBackground = ContextCompat.getDrawable(
-            requireActivity(),
-            R.drawable.default_background
-        )
-        mMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(mMetrics)
+        activity?.let {
+            mBackgroundManager = BackgroundManager.getInstance(it)
+            mBackgroundManager.attach(it.window)
+            mMetrics = DisplayMetrics()
+            it.windowManager.defaultDisplay.getMetrics(mMetrics)
+            }
+
     }
 
     private fun setupUIElements() {
@@ -59,8 +59,10 @@ class MainFragment : BrowseSupportFragment() {
         headersState = HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
 
-        brandColor = ContextCompat.getColor(requireActivity(), R.color.fastlane_background)
-        searchAffordanceColor = ContextCompat.getColor(requireActivity(), R.color.search_opaque)
+        activity?.let {
+            brandColor = ContextCompat.getColor(it, R.color.fastlane_background)
+            searchAffordanceColor = ContextCompat.getColor(it, R.color.search_opaque)
+        }
     }
 
     private fun loadRows() {
@@ -100,14 +102,14 @@ class MainFragment : BrowseSupportFragment() {
             "setting_username",
             ""
         ).observe(viewLifecycleOwner, {
-            mainViewModel.username = it ?: ""
+            mainViewModel.username = it
             mainViewModel.getListFiles()
         })
         mainViewModel.sharedPreferenceStringLiveDataPassword.getStringLiveData(
             "setting_password",
             ""
         ).observe(viewLifecycleOwner, {
-            mainViewModel.password = it ?: ""
+            mainViewModel.password = it
             mainViewModel.getListFiles()
         })
 
@@ -115,7 +117,7 @@ class MainFragment : BrowseSupportFragment() {
 
     private fun addListFilesRow(parent: SmbFile?) {
 
-        if (listSmbFiles == null) {
+        if (listSmbFiles.isEmpty()) {
             return
         }
 
@@ -125,7 +127,7 @@ class MainFragment : BrowseSupportFragment() {
             listRowAdapter.add(parent)
         }
 
-        for (smbFile: SmbFile in listSmbFiles!!) {
+        for (smbFile: SmbFile in listSmbFiles) {
             listRowAdapter.add(smbFile)
         }
 
